@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+<head>
+	<meta charset = "utf-8">
+	<title>D3.js</title>
+</head>
+<body>
+	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+
+	<script>
+
+		var dataset = [
+                  [   5,   150 , 15],
+                  [ 480,   300 , 21],
+                  [ 250,   400 , 3],
+                  [ 100,   330 , 18],
+                  [ 330,   50  , 10],
+                  [ 410,   120 , 5],
+                  [ 475,   340 , 15],
+                  [  25,   470 , 12],
+                  [  85,   210 , 22],
+                  [ 220,   380 , 45],
+                  [ 320,   230 , 35]
+              ];
+
+		var yScale = d3.scale.linear()
+							.domain([0, 500])
+							.range([500, 0])
+
+		var xScale = d3.scale.linear()
+					.domain([0, 500])
+					.range([0, 500])
+
+		var yAxis = d3.svg.axis()
+        	    		  .scale(yScale)
+            			  .orient("left")
+            			  .ticks(5);
+
+		var xAxis = d3.svg.axis()
+                  .scale(xScale)
+                  .orient("bottom")
+                  .ticks(10);
+
+        var svg = d3.select("body")
+				    .append("svg")
+				    .attr("width", 1000)
+				    .attr("height", 1000);
+
+	svg.append("g")
+		.attr("class", "axis")
+		.attr("transform", "translate(" + 50 + ",0)")
+		.call(yAxis);
+
+	svg.append("g")
+   		.attr("class", "axis")
+   		.attr("transform", "translate(50," + (500) + ")")
+   		.call(xAxis);
+
+			svg.selectAll("circle")
+   			   .data(dataset)
+		       .enter()
+			   .append("circle")
+		   		.transition()
+				.delay(function(d,i){
+					return i * 300
+				})
+				.duration(1000)
+				.ease("bounce")
+			   .each("start", function(){
+					d3.select(this).attr({
+						fill : "green",
+						r : 0,
+						cy : 0
+					})
+				})
+				.attr({
+				   		cx : function(d) {return d[0] + 50},
+				   		cy : function(d) {return 500 - d[1]},
+				   		r : function(d) {return d[2]},
+				   		fill : "red"
+				})
+	</script>
+</body>
+</html>
